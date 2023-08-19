@@ -1,0 +1,25 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+app/db.sqlite3
+app/media
+app/warehouse/.env
+app/.idea
+.warehouse
+
+
+# If you are using PyCharm #
+# User-specific stuff
+.idea
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+
+# Generated files
+.idea/**/contentModel.xml
+
