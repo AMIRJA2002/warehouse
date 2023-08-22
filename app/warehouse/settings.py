@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import os
 from pathlib import Path
 import environ
 env = environ.Env()
@@ -33,6 +32,17 @@ ALLOWED_HOSTS = [env('DJANGO_ALLOWED_HOSTS')]
 
 # Application definition
 
+LOCAL_APPS = [
+    'services.users.apps.UsersConfig',
+    'services.common.apps.CommonConfig',
+    'services.store.apps.StoreConfig'
+]
+
+THIRD_PARTY_APPS = [
+    'corsheaders',
+    'rest_framework'
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
+    *LOCAL_APPS,
+    *THIRD_PARTY_APPS,
 ]
 
 MIDDLEWARE = [
@@ -78,7 +89,6 @@ WSGI_APPLICATION = 'warehouse.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-print(env('SQL_ENGINE'), 4000 * '*')
 DATABASES = {
     'default': {
         'ENGINE': env('SQL_ENGINE'),
@@ -140,8 +150,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # celery settings
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
-CELERY_BROKER_URL = 'redis://redis:6379'
-CELERY_RESULT_BACKEND = 'redis://redis:6379'
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
 
 
 # Cache setting
@@ -155,13 +165,30 @@ CACHES = {
     }
 }
 
+
 # CORS origin settings
-# CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost",
     "http://127.0.0.1",
     "http://127.0.0.1:80",
-    "http://127.0.0.1:8000",
-    "http://0.0.0.0:8000",
 ]
+
+# user settings
+AUTH_USER_MODEL = 'users.BaseUser'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+
+# SMTP  SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'amirjas8177@gmail.com'
+EMAIL_HOST_PASSWORD = 'uwufbsrzgcxtxnmp'
+
