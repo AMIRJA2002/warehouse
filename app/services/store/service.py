@@ -81,7 +81,7 @@ class DeviceDataQueries:
     """
 
     @classmethod
-    def create_one(cls, data:Dict[any, any]) -> None:
+    def create_one(cls, data: Dict[any, any]) -> None:
         DeviceData.store_data(data=data)
 
     @classmethod
@@ -94,7 +94,7 @@ class DeviceDataQueries:
         for i in mac_address:
             sensor_data = redis_conn.hgetall(i)
             sensor_data_list.append(sensor_data)
-
+        print(sensor_data_list)
         if sensor_data_list:
             return sensor_data_list
         else:

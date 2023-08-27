@@ -1,8 +1,9 @@
-from services.store.service import StoreQueries
+from services.store.service import StoreQueries, DeviceDataQueries
 from django.contrib.auth import get_user_model
 from services.store.models import Store
 from django.test import TestCase
 from django.http import Http404
+import redis
 
 User = get_user_model()
 
@@ -36,3 +37,20 @@ class TestStoreQueries(TestCase):
     def test_delete_one_incorrect(self):
         with self.assertRaises(Http404):
             StoreQueries.delete_one(self.store.id+1, self.store.owner)
+
+
+class TestDeviceDataQueries(TestCase):
+
+    def setUp(self) -> None:
+        self.redis_conn = redis.Redis(host='redis', port=6379, db=0, charset="utf-8", decode_responses=True)
+        self.redis_conn.hset('mac', 'Battery', '100')
+
+    def test_get_one_correct(self):
+        mock_data = {'Battery': '100'}
+
+        data = DeviceDataQueries.get_one('mac')
+        self.assertEqual(data[0], mock_data)
+
+    def test_get_one_incorrect(self):
+        with self.assertRaises(Http404):
+            DeviceDataQueries.get_one('some_undefined_macaddress')
