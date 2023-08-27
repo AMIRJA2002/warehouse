@@ -1,15 +1,19 @@
 services:
+
   app:
     build: .
     container_name: warehouse_app
     restart: always
+    tty: true
     networks:
       - main
     expose:
       - 8000
     volumes:
+      - ./app:/code
       - static_volume:/code/static
       - media_volume:/code/media
+
     depends_on:
       - redis
 
@@ -43,6 +47,8 @@ services:
     restart: always
     networks:
       - main
+    volumes:
+      - redis_data:/data
     ports:
       - 6379:6379
 
@@ -58,8 +64,26 @@ services:
       - redis
       - database
 
+  emqx:
+    image: emqx/emqx:latest 
+    container_name: emqx
+    restart: always
+    env_file:
+      - ./app/warehouse/.env
+    networks:
+      - main
+    ports:
+      - 1883:1883
+      - 18083:18083
+      - 8883:8883
+      - 8083:8083
+    depends_on:
+      - app
+      - redis
+
 volumes:
   pgdata:
+  redis_data:
   static_volume:
   media_volume:
 

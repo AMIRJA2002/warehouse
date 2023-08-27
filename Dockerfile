@@ -10,4 +10,6 @@ RUN pip install -r requirements.txt
 CMD python3 manage.py makemigrations --noinput && \
     python3 manage.py migrate --noinput && \
     python3 manage.py collectstatic --noinput && \
-    gunicorn -b 0.0.0.0:8000 warehouse.wsgi
+    gunicorn -b 0.0.0.0:8000 warehouse.wsgi --reload;
+
+    

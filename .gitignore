@@ -1,4 +1,3 @@
-# Django #
 *.log
 *.pot
 *.pyc
@@ -9,9 +8,6 @@ app/warehouse/.env
 app/.idea
 .warehouse
 
-
-# If you are using PyCharm #
-# User-specific stuff
 .idea
 .idea/**/workspace.xml
 .idea/**/tasks.xml
@@ -19,7 +15,5 @@ app/.idea
 .idea/**/dictionaries
 .idea/**/shelf
 
-
-# Generated files
 .idea/**/contentModel.xml
 
